@@ -1,9 +1,6 @@
-// src/services/api.js
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import axios from 'axios';
 
-export const api = axios.create({
-  baseURL: const API_BASE_URL = 'https://smart-medicare.onrender.com';,
-});
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smart-medicare.onrender.com';
 
 // Helper function to get auth token
 const getAuthToken = () => {
