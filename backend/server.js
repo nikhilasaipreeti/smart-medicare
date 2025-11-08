@@ -280,20 +280,21 @@ app.post("/api/register", async(req, res) => {
             },
         });
     } catch (error) {
-        console.error("❌ Registration error:", error);
+    console.error("❌ Registration error details:", error);
+    console.error("❌ Error stack:", error.stack);
 
-        if (error.code === 11000) {
-            return res.status(409).json({
-                success: false,
-                message: "User already exists with this email",
-            });
-        }
-
-        res.status(500).json({
+    if (error.code === 11000) {
+        return res.status(409).json({
             success: false,
-            message: "Server error during registration",
+            message: "User already exists with this email",
         });
     }
+
+    res.status(500).json({
+        success: false,
+        message: `Server error: ${error.message}`,
+    });
+}
 });
 
 // =============================
