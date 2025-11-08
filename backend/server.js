@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 require("dotenv").config();
-
+const app = express();
 
 // =============================
 // 🔧 Middleware
@@ -30,7 +30,6 @@ app.use(express.json());
 
 // Serve static files from current directory
 app.use(express.static(__dirname));
-const app = express();
 
 
 
@@ -279,9 +278,8 @@ app.post("/api/register", async(req, res) => {
                 licenseNumber: newUser.licenseNumber,
             },
         });
-    } catch (error) {
-    console.error("❌ Registration error details:", error);
-    console.error("❌ Error stack:", error.stack);
+    } } catch (error) {
+    console.error("❌ Registration error:", error);
 
     if (error.code === 11000) {
         return res.status(409).json({
@@ -292,7 +290,7 @@ app.post("/api/register", async(req, res) => {
 
     res.status(500).json({
         success: false,
-        message: `Server error: ${error.message}`,
+        message: "Server error during registration",
     });
 }
 
