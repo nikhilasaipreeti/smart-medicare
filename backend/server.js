@@ -8,11 +8,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 require("dotenv").config();
+
 const app = express();
 
 // =============================
 // 🔧 Middleware
 // =============================
+app.use(express.json());
 app.use(
     cors({
         origin: [
@@ -25,13 +27,8 @@ app.use(
     })
 );
 
-// 🔥 ADD THIS MISSING LINE - JSON body parser
-app.use(express.json());
-
 // Serve static files from current directory
 app.use(express.static(__dirname));
-
-
 
 // Mount payment routes
 const paymentRoutes = require("./src/routes/paymentRoutes");
@@ -278,21 +275,22 @@ app.post("/api/register", async(req, res) => {
                 licenseNumber: newUser.licenseNumber,
             },
         });
-    } } catch (error) {
-    console.error("❌ Registration error:", error);
+    } catch (error) {
+        console.error("❌ Registration error:", error);
 
-    if (error.code === 11000) {
-        return res.status(409).json({
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: "User already exists with this email",
+            });
+        }
+
+        res.status(500).json({
             success: false,
-            message: "User already exists with this email",
+            message: "Server error during registration",
         });
     }
-
-    res.status(500).json({
-        success: false,
-        message: "Server error during registration",
-    });
-}
+});
 
 // =============================
 // 🔥 Login Route
@@ -783,12 +781,20 @@ app.get("/api/doctors/:id/appointments", async(req, res) => {
 // =============================
 // 🧠 MongoDB Connection
 // =============================
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/MediCareDb";
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    console.error("❌ MONGODB_URI environment variable is required");
+    process.exit(1);
+}
 
 mongoose
     .connect(MONGODB_URI)
-    .then(() => console.log("✅ Connected to MongoDB"))
-    .catch((err) => console.error("❌ MongoDB connection error:", err));
+    .then(() => console.log("✅ Connected to MongoDB Atlas"))
+    .catch((err) => {
+        console.error("❌ MongoDB connection error:", err);
+        console.log("💡 Make sure MONGODB_URI environment variable is set correctly");
+    });
 
 // =============================
 // 🧩 Basic Info Routes
@@ -843,25 +849,13 @@ app.get('/dashboard', (req, res) => {
 // =============================
 // 🚀 Start Server
 // =============================
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
-    console.log(`🌐 API Base: http://localhost:${PORT}/api`);
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📊 Health check: https://smart-medicare.onrender.com/health`);
+    console.log(`🌐 API Base: https://smart-medicare.onrender.com/api`);
     console.log(`\n🔑 Authentication:`);
-    console.log(`   POST http://localhost:${PORT}/api/login`);
-    console.log(`   POST http://localhost:${PORT}/api/register`);
-    console.log(`\n👥 User Management:`);
-    console.log(`   GET  http://localhost:${PORT}/api/doctors`);
-    console.log(`   GET  http://localhost:${PORT}/api/patients`);
-    console.log(`   GET  http://localhost:${PORT}/api/staff`);
-    console.log(`\n📅 Appointments & Feedback:`);
-    console.log(`   GET  http://localhost:${PORT}/api/appointments`);
-    console.log(`   POST http://localhost:${PORT}/api/appointments`);
-    console.log(`   GET  http://localhost:${PORT}/api/feedback`);
-    console.log(`   POST http://localhost:${PORT}/api/feedback`);
-    console.log(`\n📊 Statistics:`);
-    console.log(`   GET  http://localhost:${PORT}/api/doctors-with-stats`);
-    console.log(`   GET  http://localhost:${PORT}/api/doctors/:id/stats`);
-    console.log(`\n⚡ All routes are now available in one file!`);
+    console.log(`   POST https://smart-medicare.onrender.com/api/login`);
+    console.log(`   POST https://smart-medicare.onrender.com/api/register`);
+    console.log(`\n⚡ All routes are now available!`);
 });
