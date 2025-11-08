@@ -1,7 +1,6 @@
 // =============================
 // 🏥 MediCare+ Backend Server
 // =============================
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,7 +9,6 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 require("dotenv").config();
 
-const app = express();
 
 // =============================
 // 🔧 Middleware
@@ -26,8 +24,15 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
+
+// 🔥 ADD THIS MISSING LINE - JSON body parser
+app.use(express.json());
+
 // Serve static files from current directory
 app.use(express.static(__dirname));
+const app = express();
+
+
 
 // Mount payment routes
 const paymentRoutes = require("./src/routes/paymentRoutes");
