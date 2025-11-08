@@ -295,7 +295,6 @@ app.post("/api/register", async(req, res) => {
         message: `Server error: ${error.message}`,
     });
 }
-});
 
 // =============================
 // 🔥 Login Route
