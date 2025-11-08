@@ -14,7 +14,6 @@ const app = express();
 // =============================
 // 🔧 Middleware
 // =============================
-app.use(express.json());
 app.use(
     cors({
         origin: [
@@ -26,6 +25,9 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
+
+// JSON body parser
+app.use(express.json());
 
 // Serve static files from current directory
 app.use(express.static(__dirname));
@@ -181,7 +183,7 @@ app.get("/api/register", (req, res) => {
     });
 });
 
-app.post("/api/register", async(req, res) => {
+app.post("/api/register", async (req, res) => {
     try {
         const {
             firstName,
@@ -295,7 +297,7 @@ app.post("/api/register", async(req, res) => {
 // =============================
 // 🔥 Login Route
 // =============================
-app.post("/api/login", async(req, res) => {
+app.post("/api/login", async (req, res) => {
     console.log("🔐 Login request received");
 
     try {
@@ -370,7 +372,7 @@ app.post("/api/login", async(req, res) => {
 // =============================
 
 // GET doctor by user ID
-app.get("/api/doctors/user/:userId", async(req, res) => {
+app.get("/api/doctors/user/:userId", async (req, res) => {
     try {
         const doctor = await Doctor.findOne({ userId: req.params.userId })
             .populate('userId', 'firstName lastName email phone');
@@ -396,7 +398,7 @@ app.get("/api/doctors/user/:userId", async(req, res) => {
 });
 
 // GET all doctors
-app.get("/api/doctors", async(req, res) => {
+app.get("/api/doctors", async (req, res) => {
     try {
         const doctors = await Doctor.find()
             .populate('userId', 'firstName lastName email phone');
@@ -439,7 +441,7 @@ app.get("/api/doctors", async(req, res) => {
 // =============================
 
 // Get all patients
-app.get("/api/patients", async(req, res) => {
+app.get("/api/patients", async (req, res) => {
     try {
         const patients = await Patient.find().populate('userId', 'firstName lastName email phone');
         res.json({
@@ -457,7 +459,7 @@ app.get("/api/patients", async(req, res) => {
 });
 
 // Get patient by ID
-app.get("/api/patients/:id", async(req, res) => {
+app.get("/api/patients/:id", async (req, res) => {
     try {
         const patient = await Patient.findById(req.params.id).populate('userId', 'firstName lastName email phone');
         if (!patient) {
@@ -484,7 +486,7 @@ app.get("/api/patients/:id", async(req, res) => {
 // =============================
 
 // Get all appointments
-app.get("/api/appointments", async(req, res) => {
+app.get("/api/appointments", async (req, res) => {
     try {
         const appointments = await Appointment.find()
             .populate('patientId')
@@ -506,7 +508,7 @@ app.get("/api/appointments", async(req, res) => {
 });
 
 // Create appointment
-app.post("/api/appointments", async(req, res) => {
+app.post("/api/appointments", async (req, res) => {
     try {
         const { patientId, doctorId, appointmentDate, appointmentTime, reason } = req.body;
 
@@ -550,7 +552,7 @@ app.post("/api/appointments", async(req, res) => {
 // =============================
 
 // Get all feedback
-app.get("/api/feedback", async(req, res) => {
+app.get("/api/feedback", async (req, res) => {
     try {
         const feedback = await Feedback.find()
             .populate('patientId')
@@ -572,7 +574,7 @@ app.get("/api/feedback", async(req, res) => {
 });
 
 // Create feedback
-app.post("/api/feedback", async(req, res) => {
+app.post("/api/feedback", async (req, res) => {
     try {
         const { patientId, doctorId, rating, comment, category } = req.body;
 
@@ -616,7 +618,7 @@ app.post("/api/feedback", async(req, res) => {
 // =============================
 
 // Get all staff
-app.get("/api/staff", async(req, res) => {
+app.get("/api/staff", async (req, res) => {
     try {
         const staff = await Staff.find().populate('userId', 'firstName lastName email phone');
         res.json({
@@ -638,14 +640,14 @@ app.get("/api/staff", async(req, res) => {
 // =============================
 
 // Get doctor statistics with appointment counts
-app.get("/api/doctors-with-stats", async(req, res) => {
+app.get("/api/doctors-with-stats", async (req, res) => {
     try {
         const doctors = await Doctor.find()
             .populate('userId', 'firstName lastName email phone');
 
         // Get appointment counts for each doctor
         const doctorsWithStats = await Promise.all(
-            doctors.map(async(doctor) => {
+            doctors.map(async (doctor) => {
                 const appointmentCount = await Appointment.countDocuments({
                     doctorId: doctor._id
                 });
@@ -698,7 +700,7 @@ app.get("/api/doctors-with-stats", async(req, res) => {
 });
 
 // Get individual doctor stats
-app.get("/api/doctors/:id/stats", async(req, res) => {
+app.get("/api/doctors/:id/stats", async (req, res) => {
     try {
         const doctor = await Doctor.findById(req.params.id);
 
@@ -748,7 +750,7 @@ app.get("/api/doctors/:id/stats", async(req, res) => {
 });
 
 // Get appointments for specific doctor
-app.get("/api/doctors/:id/appointments", async(req, res) => {
+app.get("/api/doctors/:id/appointments", async (req, res) => {
     try {
         const doctor = await Doctor.findById(req.params.id);
 
@@ -781,20 +783,12 @@ app.get("/api/doctors/:id/appointments", async(req, res) => {
 // =============================
 // 🧠 MongoDB Connection
 // =============================
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-    console.error("❌ MONGODB_URI environment variable is required");
-    process.exit(1);
-}
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/MediCareDb";
 
 mongoose
     .connect(MONGODB_URI)
-    .then(() => console.log("✅ Connected to MongoDB Atlas"))
-    .catch((err) => {
-        console.error("❌ MongoDB connection error:", err);
-        console.log("💡 Make sure MONGODB_URI environment variable is set correctly");
-    });
+    .then(() => console.log("✅ Connected to MongoDB"))
+    .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // =============================
 // 🧩 Basic Info Routes
@@ -849,13 +843,25 @@ app.get('/dashboard', (req, res) => {
 // =============================
 // 🚀 Start Server
 // =============================
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-    console.log(`📊 Health check: https://smart-medicare.onrender.com/health`);
-    console.log(`🌐 API Base: https://smart-medicare.onrender.com/api`);
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/health`);
+    console.log(`🌐 API Base: http://localhost:${PORT}/api`);
     console.log(`\n🔑 Authentication:`);
-    console.log(`   POST https://smart-medicare.onrender.com/api/login`);
-    console.log(`   POST https://smart-medicare.onrender.com/api/register`);
-    console.log(`\n⚡ All routes are now available!`);
+    console.log(`   POST http://localhost:${PORT}/api/login`);
+    console.log(`   POST http://localhost:${PORT}/api/register`);
+    console.log(`\n👥 User Management:`);
+    console.log(`   GET  http://localhost:${PORT}/api/doctors`);
+    console.log(`   GET  http://localhost:${PORT}/api/patients`);
+    console.log(`   GET  http://localhost:${PORT}/api/staff`);
+    console.log(`\n📅 Appointments & Feedback:`);
+    console.log(`   GET  http://localhost:${PORT}/api/appointments`);
+    console.log(`   POST http://localhost:${PORT}/api/appointments`);
+    console.log(`   GET  http://localhost:${PORT}/api/feedback`);
+    console.log(`   POST http://localhost:${PORT}/api/feedback`);
+    console.log(`\n📊 Statistics:`);
+    console.log(`   GET  http://localhost:${PORT}/api/doctors-with-stats`);
+    console.log(`   GET  http://localhost:${PORT}/api/doctors/:id/stats`);
+    console.log(`\n⚡ All routes are now available in one file!`);
 });
