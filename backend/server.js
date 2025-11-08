@@ -27,7 +27,6 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
-
 // Serve static files from current directory
 app.use(express.static(__dirname));
 
