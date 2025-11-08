@@ -1,6 +1,13 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'https://smart-medicare.onrender.com/api';
+// Add these helper functions at the top of your api.js file:
+
+// Helper function to get auth token
+const getAuthToken = () => {
+    return localStorage.getItem('token');
+};
+
 // Helper function to get auth headers
 const getAuthHeaders = () => {
     const token = getAuthToken();
@@ -9,7 +16,6 @@ const getAuthHeaders = () => {
         ...(token && { 'Authorization': `Bearer ${token}` })
     };
 };
-
 // Main API object
 export const api = {
     // Test backend connection
