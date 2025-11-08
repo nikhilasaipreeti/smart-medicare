@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://smart-medicare.onrender.com';
-
 // Helper function to get auth token
 const getAuthToken = () => {
     return localStorage.getItem('token');
