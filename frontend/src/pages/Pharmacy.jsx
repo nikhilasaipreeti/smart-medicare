@@ -75,7 +75,7 @@ const Pharmacy = () => {
     setIsPaying(true);
 
     try {
-      const { data } = await axios.post("http://localhost:8080/api/payment/create-order", {
+       const { data } = await axios.post("https://smart-medicare.onrender.com/api/payment/create-order", {
         amount: total,
       });
 
