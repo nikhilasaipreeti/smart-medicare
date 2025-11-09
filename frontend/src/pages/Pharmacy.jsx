@@ -70,46 +70,45 @@ const Pharmacy = () => {
   };
 
   // 💳 Razorpay Payment
-  const processPayment = async () => {
-    if (total <= 0) return alert("Please add items to cart first!");
-    setIsPaying(true);
+const processPayment = async () => {
+  if (total <= 0) return alert("Please add items to cart first!");
+  setIsPaying(true);
 
-    try {
-       const { data } = await axios.post("https://smart-medicare.onrender.com/api/payment/create-order", {
-        amount: total,
-      });
+  try {
+    const { data } = await axios.post("https://smart-medicare.onrender.com/api/payment/create-order", {
+      amount: total,
+    });
 
-      const options = {
-        key: "rzp_test_RcsGI58BAiNfZP",
-        amount: data.amount,
-        currency: data.currency,
-        name: "MediCare+ Pharmacy",
-        description: "Medicine Payment",
-        order_id: data.orderId,
-        handler: function () {
-          alert("✅ Payment Successful!");
-          setPaymentDone(true);
-          setCart({});
-          setTotal(0);
-        },
-        prefill: {
-          name: "MediCare User",
-          email: "user@example.com",
-          contact: "9999999999",
-        },
-        theme: { color: "#16a34a" },
-      };
+    const options = {
+      key: "rzp_test_RcsGI58BAiNfZP",
+      amount: data.amount,
+      currency: data.currency,
+      name: "MediCare+ Pharmacy",
+      description: "Medicine Payment",
+      order_id: data.orderId,
+      handler: function (response) {
+        alert("✅ Payment Successful!");
+        setPaymentDone(true);
+        setCart({});
+        setTotal(0);
+      },
+      prefill: {
+        name: "MediCare User",
+        email: "user@example.com",
+        contact: "9999999999",
+      },
+      theme: { color: "#16a34a" },
+    };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-      setIsPaying(false);
-    } catch (err) {
-      console.error("❌ Razorpay Error:", err);
-      alert("Payment failed. Please try again.");
-      setIsPaying(false);
-    }
-  };
-
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (err) {
+    console.error("❌ Razorpay Error:", err);
+    alert("Payment failed. Please try again.");
+  } finally {
+    setIsPaying(false);
+  }
+};
   // ⏩ Scroll buttons
   const scrollLeft = () => {
     scrollRef.current.scrollBy({ left: -400, behavior: "smooth" });
