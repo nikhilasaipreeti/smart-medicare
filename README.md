@@ -43,10 +43,9 @@ Smart Medicare is a comprehensive hospital management system that provides:
 - **Razorpay** - Payment gateway integration
 
 
-## 📁 Project Structure
+<img width="1907" height="868" alt="image" src="https://github.com/user-attachments/assets/778e98b6-fade-4264-b982-0ba4c705014b" />
 
-<img width="522" height="445" alt="Screenshot 2025-11-20 001500" src="https://github.com/user-attachments/assets/c8bdc61d-c5c8-4101-9326-e9a3bed53528" />
-
+<img width="1880" height="918" alt="Screenshot 2025-11-02 011624" src="https://github.com/user-attachments/assets/d81499c0-6cc5-4745-a307-0fb65053bf11" />
 
 ## 🎯 Key Features
 
