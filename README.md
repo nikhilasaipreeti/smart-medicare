@@ -42,12 +42,10 @@ Smart Medicare is a comprehensive hospital management system that provides:
 - **MongoDB Atlas** - Cloud database service
 - **Razorpay** - Payment gateway integration
 
- ## 📁 Project detail
-[PROJECT REPORT msd.pdf](https://github.com/user-attachments/files/23635335/PROJECT.REPORT.msd.pdf)
-
 
 ## 📁 Project Structure
-<img width="522" height="445" alt="image" src="https://github.com/user-attachments/assets/2b86f088-c4fc-41a3-8cca-374c1cf9e9e3" />
+
+<img width="522" height="445" alt="Screenshot 2025-11-20 001500" src="https://github.com/user-attachments/assets/c8bdc61d-c5c8-4101-9326-e9a3bed53528" />
 
 
 ## 🎯 Key Features
