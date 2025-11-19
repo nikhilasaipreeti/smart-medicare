@@ -1,20 +1,20 @@
 Here's a comprehensive README.md file for your Smart Medicare project:
 
 ```markdown
-# 🏥 Smart Medicare - Hospital Management System
+🏥 Smart Medicare - Hospital Management System
 
 A full-stack hospital management system built with modern web technologies that provides a complete solution for patients, doctors, and hospital staff.
 
-## 🌟 Live Demo
+🌟 Live Demo
 
 - **Frontend**: https://smart-medicare-1.onrender.com
 - **Backend API**: https://smart-medicare.onrender.com
 
-## 📋 Project Overview
+📋 Project Overview
 
 Smart Medicare is a comprehensive hospital management system that streamlines healthcare operations with features for patients, doctors, and administrative staff. The platform provides seamless appointment scheduling, patient management, doctor consultations, pharmacy services, and payment processing.
 
-### 🎯 Key Features
+🎯 Key Features
 
 #### 👥 Multi-Role System
 - **Patients**: Book appointments, manage medical history, purchase medicines
