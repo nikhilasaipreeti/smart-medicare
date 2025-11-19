@@ -47,27 +47,8 @@ Smart Medicare is a comprehensive hospital management system that provides:
 
 
 ## 📁 Project Structure
+<img width="522" height="445" alt="image" src="https://github.com/user-attachments/assets/2b86f088-c4fc-41a3-8cca-374c1cf9e9e3" />
 
-```
-smart-medicare/
-├── frontend/                 # React frontend application
-│   ├── src/
-│   │   ├── components/       # Reusable components
-│   │   ├── pages/           # Page components
-│   │   ├── services/        # API services
-│   │   ├── assets/          # Images and static files
-│   │   └── App.jsx          # Main application component
-│   ├── package.json
-│   └── vite.config.js
-├── backend/                  # Node.js backend application
-│   ├── src/
-│   │   ├── routes/          # API routes
-│   │   ├── models/          # Database models
-│   │   ├── middleware/      # Custom middleware
-│   │   └── server.js        # Main server file
-│   └── package.json
-└── README.md
-```
 
 ## 🎯 Key Features
 
